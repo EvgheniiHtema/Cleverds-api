@@ -3,6 +3,7 @@ package com.cleverds.controller;
 import com.cleverds.logic.model.NotificationDto;
 import com.cleverds.logic.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.OK;
 
 @Produces(APPLICATION_JSON)
 @Consumes(APPLICATION_JSON)
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
 public class NotificationController {
@@ -29,8 +33,9 @@ public class NotificationController {
     }
 
     @PostMapping("/notifications")
-    List<NotificationDto> addNotification(@RequestBody NotificationDto notification) {
-        return notificationService.addNotification(notification);
+    Response addNotification(@RequestBody NotificationDto notification) {
+        notificationService.addNotification(notification);
+        return Response.status(OK).build();
     }
 
     @DeleteMapping("/notifications")
